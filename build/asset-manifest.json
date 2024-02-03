@@ -1,0 +1,19 @@
+{
+  "files": {
+    "main.css": "/static/css/main.00dc4ae0.css",
+    "main.js": "/static/js/main.f22de5e9.js",
+    "static/media/meet-your-soul-pic-2.jpg": "/static/media/meet-your-soul-pic-2.17ffb11bb0d7af3caa71.jpg",
+    "static/media/drums.jpg": "/static/media/drums.093a3f9a5e3f2a20f20f.jpg",
+    "static/media/piano.jpg": "/static/media/piano.4d03984d1e71390330de.jpg",
+    "static/media/bass.jpg": "/static/media/bass.b9b80e3ef5994d6ecde2.jpg",
+    "static/media/singer.jpg": "/static/media/singer.6674a53e97e57c6e7afd.jpg",
+    "static/media/guitar.jpg": "/static/media/guitar.a171f4075017438693a6.jpg",
+    "index.html": "/index.html",
+    "main.00dc4ae0.css.map": "/static/css/main.00dc4ae0.css.map",
+    "main.f22de5e9.js.map": "/static/js/main.f22de5e9.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.00dc4ae0.css",
+    "static/js/main.f22de5e9.js"
+  ]
+}
