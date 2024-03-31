@@ -5,9 +5,10 @@ const self = this;
 
 //installation
 self.addEventListener("install", (event) => {
+  console.log('Service Worker installé');
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log("Opened cache");
+      console.log("Opened caches");
       return cache.addAll(urlsToCache);
     })
   );
@@ -24,7 +25,8 @@ self.addEventListener("fetch", (event) => {
 
 // actitivate the service worker
 self.addEventListener("activate", (event) => {
-    const cacheWhitelist = [];
+  console.log('Service Worker activé');  
+  const cacheWhitelist = [];
     cacheWhitelist.push(CACHE_NAME);
     event.waitUntil(
         caches.keys().then((cacheNames) => Promise.all(
@@ -37,12 +39,11 @@ self.addEventListener("activate", (event) => {
     )
 });
 
-// receive notifs
 self.addEventListener("push", function(e) {
+  console.log('Notification push reçue');
   var options = {
-    body: 'Salut mec, tu veux rejoindre mon groupe ?',
+    body: e.data.text(),
     icon: './logo192.png',
-    vibrate: [100,50,100],
     data: {
       dateOfArrival: Date.now(),
       primaryKey: '2'
@@ -53,6 +54,16 @@ self.addEventListener("push", function(e) {
     ]
   };
   e.waitUntil(
-    self.registration.showNotification("Enfin un groupe !", options)
+    self.registration.showNotification("Meet your soul", options)
   )
+});
+
+self.addEventListener('notificationclick', function(event) {
+  console.log('Notification cliquée');
+
+  event.notification.close();
+
+  event.waitUntil(
+    clients.openWindow('http://localhost:3000/invitation')
+  );
 });

@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { app } from "./FirebaseConfig";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, getAuth } from 'firebase/auth'
 import coverPicture from "../assets/meet-your-soul-pic-2.jpg";
 import { useNavigate } from 'react-router-dom'
-import { getFirestore, setDoc, doc } from 'firebase/firestore';
+import { getFirestore, setDoc, getDoc, deleteDoc, doc, collection, getDocs } from 'firebase/firestore';
+import { userLogin } from "../home/request";
+import { jwtDecode } from "jwt-decode";
+import Cookies from 'js-cookie';
 
 function RegisterAndLogin(){
     const [login, setLogin] = useState(false);
@@ -20,9 +23,54 @@ function RegisterAndLogin(){
     };
 
     const history = useNavigate()
-    const db = getFirestore(app);
+    const db = getFirestore();
     const database = getAuth(app);
 
+    const deleteDummyDocument = async () => {
+      try {
+        const dummyDocRef = doc(db, 'users', 'dummy');
+        await deleteDoc(dummyDocRef);
+        console.log("Le document 'dummy' a été supprimé avec succès.");
+      } catch (error) {
+        console.error("Erreur lors de la suppression du document 'dummy' :", error.message);
+      }
+    };
+
+    const createUsersCollection = async () => {
+      try {
+        const usersCollectionRef = collection(db, 'users');
+        const usersCollectionSnapshot = await getDocs(usersCollectionRef);
+    
+        if (usersCollectionSnapshot.empty) {
+          console.log("La collection 'users' n'existe pas. Création de la collection...");
+          // Ajoutez un document factice pour créer la collection
+          await setDoc(doc(db, 'users', 'dummy'), {});
+          console.log("La collection 'users' a été créée avec succès.");
+        } else {
+          console.log("La collection 'users' existe déjà.");
+        }
+      } catch (error) {
+        console.error("Erreur lors de la création de la collection 'users' :", error.message);
+      }
+    };
+
+    const createUserDocument = async (uid, userData) => {
+      try {
+        const userDocRef = doc(db, 'users', uid); // 'users' au lieu de 'user'
+        const userDocSnapshot = await getDoc(userDocRef);
+    
+        if (!userDocSnapshot.exists()) {
+          await setDoc(userDocRef, userData);
+          console.log("Nouveau document utilisateur créé avec succès!");
+          deleteDummyDocument();
+        } else {
+          console.log("Le document utilisateur existe déjà.");
+        }
+      } catch (error) {
+        console.error("Erreur lors de la création du document utilisateur :", error.message);
+      }
+    };
+    
 
     const SignIn = async (e, type) => {
         e.preventDefault()
@@ -35,14 +83,22 @@ function RegisterAndLogin(){
             const userCredential = await createUserWithEmailAndPassword(database, email, password);
             const user = userCredential.user;
             await updateProfile(user, { displayName: username });
-            const userDocRef = doc(db, 'user', user.uid);
-            console.log(instrument)
-            console.log(niveau)
-            await setDoc(userDocRef, {
+
+            // Créer la collection 'users' si elle n'existe pas
+            await createUsersCollection();
+                
+            await createUserDocument(user.uid, {
               instrument: parseInt(instrument),
               niveau: parseInt(niveau),
-              username: username
+              username: username,
+              email: email,
+              notification: null,
+              group_request: []
             });
+
+            const jwt = await userLogin(email, user.uid, password);
+            Cookies.set("jwt", jwt, { expires: 7, secure: true });
+            console.log(jwt)
             history('/home')
           } catch(error) {
             setAlertMessage(`${error}`);
@@ -50,15 +106,36 @@ function RegisterAndLogin(){
           }
           
         } else {
-            signInWithEmailAndPassword(database, email, password).then(data => {
-              console.log(data, "authData");
-              history('/home')
-          }).catch((error) => {
+          const data =  await signInWithEmailAndPassword(database, email, password);
+          const jwt = await userLogin(email, data.user.uid, password);
+          Cookies.set("jwt", jwt, { expires: 7, secure: true });
+          console.log(jwt)
+          history('/home')
+          /*
+          .catch((error) => {
               const errorCode = error.code;
+              console.log(error);
               setAlertMessage(`${errorCode}`);
           })
+          */
         }
     }
+
+    useEffect(() => {    
+      
+      async function connection() {
+        const decodedToken = jwtDecode(jwtToken);
+        console.log(decodedToken.email)
+        console.log(decodedToken.password)
+        await signInWithEmailAndPassword(database, decodedToken.email, decodedToken.password);
+        history('/home')
+      }
+
+      const jwtToken = Cookies.get("jwt");
+      if (jwtToken != null) {
+        connection()
+      }
+    }, []);
 
     return (
         <div className='overflow-hidden'>
