@@ -17,9 +17,9 @@ function Home(){
     const [userNameToSend, setUserNameToSend] = useState();
     const [userUidToSend, setUserUidToSend] = useState();
     const [writingMsg, setWritingMsg] = useState(false);
-    const [d, setd] = useState(false);
-    const [showdMusicians, setShowdMusicians] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [showNotificationsAccepted, setShowNotificationsAccepted] = useState(false);
+    const [showLoadingMusicians, setShowLoadingMusicians] = useState(false);
     const [showErrorModal, setShowErrorModal] = useState(false);
     const [showSubscribeButton, setShowSubscribeButton] = useState(false);
     const database = getAuth(app);
@@ -34,17 +34,17 @@ function Home(){
 
     async function callInviteMessage(uid, name ,e) {
         e.preventDefault();
-        setd(true);
+        setLoading(true);
         setUserUidToSend(uid);
         setUserNameToSend(name);
         
         const isNotificationOfTargetUserActivated = await checkNotificationsActivated(uid)
         if (!isNotificationOfTargetUserActivated) {
-            setd(false);
+            setLoading(false);
             setShowErrorModal(true)
             return;
         }
-        setd(false);
+        setLoading(false);
         setWritingMsg(true);
     }
 
@@ -62,7 +62,7 @@ function Home(){
         e.preventDefault();
         const messageToSend = document.getElementById("messageToSend").value
         setWritingMsg(false);
-        setd(true);
+        setLoading(true);
         const jwtToken = Cookies.get("jwt");
         console.log("invite " + userUidToSend)
         const userDocRef = await doc(db, 'users', userUidToSend);
@@ -70,7 +70,7 @@ function Home(){
         const subscritpion = userDocSnapshot.data().notification;
         console.log(userUidToSend)
         await sendNotification(jwtToken, subscritpion, messageToSend, userUidToSend);
-        setd(false);
+        setLoading(false);
     }
 
     const instruments = {
@@ -99,7 +99,7 @@ function Home(){
     };
 
     async function subscribe() {
-        setd(true);
+        setLoading(true);
         let sw = await navigator.serviceWorker.ready;
         let push = await sw.pushManager.subscribe({
           userVisibleOnly: true,
