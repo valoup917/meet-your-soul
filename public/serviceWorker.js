@@ -64,6 +64,6 @@ self.addEventListener('notificationclick', function(event) {
   event.notification.close();
 
   event.waitUntil(
-    clients.openWindow('http://localhost:3000/invitation')
+    clients.openWindow('http://localhost:3000/invitations')
   );
 });
