@@ -4,7 +4,7 @@
 </p>
 
 <p align="center">
-  blablalba
+  Une simple application destinée aux musiciens afin de créer des groupes avec différentes personnes, selon leur instrument et leur niveau.
 </p>
 
 ---
@@ -30,7 +30,22 @@ la performance et l'expérience utilisateur en conditions de réseau limité �
 
 ## 👨🏽‍💻 Mon projet
 
-blablabla
+
+#### 🎶 Présentation
+Bienvenue sur notre application Progressive Web App (PWA) 🌐, une plateforme spécialement conçue pour les musiciens désireux de former des groupes et de collaborer avec d'autres artistes 🎸🥁. Cette application facilite la rencontre et la collaboration entre musiciens de différents niveaux et spécialisations instrumentales, rendant la création de synergies musicales à la fois simple et enrichissante.
+
+#### 🔗 Fonctionnalités
+Au cœur de notre application, chaque fonctionnalité est pensée pour faciliter chaque étape de votre parcours musical 🎼. Dès l'inscription, chaque utilisateur peut créer un profil, y indiquant son instrument de prédilection et son niveau de compétence 🎷. Les utilisateurs ont ensuite accès à une liste complète d'autres musiciens, favorisant des connexions précises et pertinentes. La fonctionnalité d'invitations personnalisées permet d'envoyer des invitations pour rejoindre ou former un groupe, avec des notifications en temps réel propulsées par les capacités de la PWA, même si l'autre utilisateur n'est pas en ligne 💌. La gestion des invitations, acceptées ou refusées, est également intuitive, permettant une interaction fluide et simple entre les utilisateur
+
+---
+
+## 🖥️ Ma solution
+
+<img alt="mockup 1" title="mockup" src="./src/assets/readme/login-gif.gif" width="1050">
+
+---
+
+<img alt="mockup 2" title="mockup" src="./src/assets/readme/notification-gif.gif" width="1050">
 
 ---
 
@@ -70,16 +85,9 @@ blablabla
   <img alt="React" src="https://img.shields.io/badge/-React-45b8d8?style=for-the-badge&logo=react&logoColor=white" />
   <img alt="Tailwind Css" src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" />
   <img alt="Nodejs" src="https://img.shields.io/badge/-Nodejs-43853d?style=for-the-badge&logo=Node.js&logoColor=white" />
+  <img alt="Javascript" src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" />
 </div>
 </br>
-blablabla
 
----
+J'ai choisi de créer un service worker en vanilla JS pour bien comprendre les enjeux et les foncitonnalités de la pwa, ainsi qu'un front en react js et un back en node totalement sécurisé.
 
-## 🖥️ Ma solution
-
-<img alt="mockup 1" title="mockup" src="./src/assets/readme/login-gif.gif" width="1050">
-
----
-
-<img alt="mockup 2" title="mockup" src="./src/assets/readme/notification-gif.gif" width="1050">
