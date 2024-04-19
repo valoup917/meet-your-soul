@@ -1,6 +1,6 @@
-<h1 align="center"> 🔔  Progressive web app  📲 </h1> <br>
+<h1 align="center"> 🔔 Progressive web app 🎶 </h1> <br>
 <p align="center">
-    <img alt="mockup" title="mockup" src="./src/assets/readme/pwa-logo.png" width="300">
+    <img alt="mockup" title="mockup" src="./src/assets/readme/mockups-presentation.png" width="1000">
 </p>
 
 <p align="center">
@@ -16,6 +16,11 @@ Une Progressive Web App (PWA) est une application web conçue pour offrir une ex
 Elle tire parti des dernières technologies pour permettre un chargement rapide ⚡, une grande réactivité 🔄 et la possibilité de 
 fonctionner hors ligne ou sur des réseaux de faible qualité 📶. Les PWA sont conçues pour être sécurisées 🔒, fiables 💪 et engageantes 🤝, 
 permettant ainsi une interaction plus naturelle et intégrée sur l'appareil de l'utilisateur.
+</br>
+</br>
+<p align="center">
+    <img alt="mockup" title="mockup" src="./src/assets/readme/pwa-logo.png" width="300">
+</p>
 
 #### 🔧 Comment ça fonctionne ?
 Notre PWA utilise React JS pour créer une interface utilisateur interactive et dynamique 🖥️. Grâce à React, nous pouvons mettre à jour le contenu de 
