@@ -15,6 +15,10 @@ admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
 });
 
+app.get('/ping', async (req, res) => {
+  res.send("Ok")
+})
+
 app.post('/login', async (req, res) => {
   console.log("login -------------------------------")
   const email = req.body.email;
