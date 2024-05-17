@@ -6,6 +6,7 @@ module.exports = {
     './src/**/*.js',
     // Ajoutez d'autres fichiers ou répertoires selon vos besoins
   ],
+  purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
   theme: {
     extend: {},
   },

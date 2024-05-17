@@ -16,11 +16,12 @@ admin.initializeApp({
 });
 
 app.post('/login', async (req, res) => {
+  console.log("login -------------------------------")
   const email = req.body.email;
   const uid = req.body.uid;
   const password = req.body.password;
   user = { email: email, uid: uid, password: password }
-
+  console.log(user)
   const accessToken =  jwt.sign(user, process.env.ACCESS_TOKEN_SECRET)
   res.json({ accessToken: accessToken });
 });
@@ -44,8 +45,8 @@ function authenticateToken(req, res, next) {
 }
 
 app.get('/getUsers', authenticateToken, async (req, res) => {
- console.log("getUsers -------------------------------")
- try {
+  console.log("getUsers -------------------------------")
+  try {
       const usersSnapshot = await admin.firestore().collection('users').get();
   
       const usersData = [];
@@ -59,6 +60,23 @@ app.get('/getUsers', authenticateToken, async (req, res) => {
       console.error('Error getting user info:', error);
       res.status(500).send(error);
     }
+});
+
+app.get('/getUsersWithoutSecurity', async (req, res) => {
+  console.log("getUsersWithoutSecurity -------------------------------")
+  try {
+    const usersSnapshot = await admin.firestore().collection('users').get();
+
+    const usersData = [];
+    usersSnapshot.forEach((doc) => {
+      usersData.push({ id: doc.id, ...doc.data() });
+    });
+
+    res.json(usersData);
+  } catch (error) {
+    console.error('Error getting user info:', error);
+    res.status(500).send(error);
+  }
 });
 
 app.get('/getGroupRequests', authenticateToken, async (req, res) => {
@@ -138,10 +156,6 @@ app.post('/sendNotif', authenticateToken, async (req, res) => {
     group_request.push(message);
     await userDocRef.update({ group_request: group_request });
   }
-  console.log(subscritpion)
-  console.log(message)
-  console.log(process.env.VAPID_PRIVATE_KEY)
-  console.log(process.env.VAPID_PUBLIC_KEY)
   push.sendNotification(subscritpion, message).then(response => {
     res.send("Message sent");
     console.log(response)
