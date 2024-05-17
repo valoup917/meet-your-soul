@@ -92,6 +92,10 @@ module.exports = {
                 {
                     from: 'public/logo192.png',
                     to: ''
+                },
+                {
+                    from: '_redirects',
+                    to: ''
                 }
             ]
         })
