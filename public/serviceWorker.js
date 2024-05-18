@@ -15,8 +15,8 @@ const URL_POST_SEND_NOTIF_LAST = '/sendNotif'
 const URL_POST_JOIN_GROUP_LAST = '/joinGroup'
 const URL_GET_GROUP_REQUESTS_LAST = '/getGroupRequests';
 const URL_GET_USERS_LAST = '/getUsers';
-const URL_GET_USERS = 'http://localhost:3005/getUsers';
-const URL_GET_USERS_WS = 'http://localhost:3005/getUsersWithoutSecurity';
+const URL_GET_USERS = 'https://pwa-epitech.onrender.com/getUsers';
+const URL_GET_USERS_WS = 'https://pwa-epitech.onrender.com/getUsersWithoutSecurity';
 
 //installation
 self.addEventListener('install', (event) => {

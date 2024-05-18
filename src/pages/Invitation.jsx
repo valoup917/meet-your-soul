@@ -28,6 +28,7 @@ function Invitation() {
     }
 
     async function joinGroup(userUid, e) {
+        setLoading("Intégration au groupe");
         e.preventDefault();
         const jwtToken = Cookies.get("jwt");
         try {
@@ -35,8 +36,10 @@ function Invitation() {
             const data1 = await groupRequestsFunctionRequest(jwtToken);
             setGroupRequests(data1)
         } catch (e) {
+            setLoading(null);
             setErrorMessage("Erreur lors de l'acceptation de l'invitation")
         }
+        setLoading(null);
     }
 
     const handleClose = () => {

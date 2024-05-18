@@ -1,6 +1,8 @@
+import { useNavigate } from 'react-router-dom'
 import React from "react";
 
 const Alert = ({ userMessage, appMessage, onClose }) => {
+    const history = useNavigate()
     return (
         <div className="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black bg-opacity-50 py-10 z-50">
         <div className="max-h-full w-full max-w-2xl overflow-y-auto sm:rounded-2xl bg-white">
@@ -24,7 +26,7 @@ const Alert = ({ userMessage, appMessage, onClose }) => {
                             className="block w-full select-none ml-1 rounded-lg bg-indigo-600 text-white hover:bg-black hover:text-white py-3 px-7 text-center align-middle font-sans text-lg font-bold uppercase duration-300 text-gray-900 shadow-md shadow-black-500/20 transition-all hover:shadow-lg hover:shadow-pink-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                         type="button"
                         data-ripple-light="true"
-                        onClick={onClose}
+                            onClick={() => { history('/invitations')}}
                     >
                         Invitations
                     </button>
