@@ -52,7 +52,7 @@ app.get('/getUsers', authenticateToken, async (req, res) => {
   console.log("getUsers -------------------------------")
   try {
       const usersSnapshot = await admin.firestore().collection('users').get();
-  
+    
       const usersData = [];
       usersSnapshot.forEach((doc) => {
         if (req.user.email !== doc.data().email)
@@ -137,12 +137,29 @@ app.post('/joinGroup', authenticateToken, async (req, res) => {
   const usersSnapshotUidGet = await usersSnapshotUid.get();
   const group_request = usersSnapshotUidGet.data().group_request
 
+  console.log(usersSnapshotUidGet.data())
+
+  if (usersSnapshotUidGet.data().group === null) {
+    const usersRequestSnapshotUid = await usersSnapshot.doc(targetUid);
+    const usersRequestSnapshotUidGet = await usersRequestSnapshotUid.get();
+    const newGroupId = usersRequestSnapshotUidGet.data().group;
+    usersSnapshotUid.update({ group: newGroupId })
+    const groupDocRef = admin.firestore().collection('groups').doc(newGroupId);
+    await groupDocRef.update({
+      users: admin.firestore.FieldValue.arrayUnion(req.user.uid)
+    });
+  } else {
+    const tmpPreviousGroup = usersSnapshotUidGet.data().group
+    console.log(tmpPreviousGroup)
+    console.log("tmpPreviousGroup")
+  }
+
   const acceptIndex = group_request.findIndex((userUid) => userUid == targetUid)
   group_request.splice(acceptIndex, 1)
   group_request.splice(acceptIndex, 1)
 
   usersSnapshotUid.update({ group_request: group_request })
-  res.send("Message sent");
+  res.send("Group joined");
 });
 
 app.post('/sendNotif', authenticateToken, async (req, res) => {
@@ -168,6 +185,20 @@ app.post('/sendNotif', authenticateToken, async (req, res) => {
     console.log(error)
     res.status(405).send(error);
   });
+});
+
+app.post('/sendGroupNotif', authenticateToken, async (req, res) => {
+  push.setVapidDetails('mailto:test@gmail.com', process.env.VAPID_PUBLIC_KEY, process.env.VAPID_PRIVATE_KEY)
+  const subscritpion = req.body.subscritpion
+  const message = req.body.message
+
+  push.sendNotification(subscritpion, message).then(response => {
+    res.send("Message sent");
+    console.log(response)
+  }).catch(error => {
+      console.log(error)
+      res.status(405).send(error);
+    });
 });
 
 app.listen(port, () => {

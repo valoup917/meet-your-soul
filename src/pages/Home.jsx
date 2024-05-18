@@ -2,13 +2,9 @@ import React, { useState, useEffect } from "react";
 import { app } from "../registration/FirebaseConfig";
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { useNavigate } from 'react-router-dom'
-import singer from "../assets/instruments/singer.jpg"
-import drums from "../assets/instruments/drums.jpg"
-import guitar from "../assets/instruments/guitar.jpg"
-import bass from "../assets/instruments/bass.jpg"
-import piano from "../assets/instruments/piano.jpg"
+import "./Home.css";
 import { getAllMusiciansRequest, checkNotificationsRequest, sendNotificationRequest } from "../controlers/request";
-import { getFirestore, doc, updateDoc, getDoc } from 'firebase/firestore';
+import { getFirestore, doc, updateDoc, getDoc, addDoc, collection } from 'firebase/firestore';
 import ErrorModalComponent from "../components/ErrorModal"
 import LoadingModalComponent from "../components/LoadingModal"
 import WrittingTextModalComponent from "../components/WrittingTextModal"
@@ -16,6 +12,8 @@ import Cookies from 'js-cookie';
 import { jwtDecode } from "jwt-decode";
 import ShowMessageModalComponent from "../components/ShowMessageModal";
 import OfflineComponent from "../components/OfflineModul";
+import MenuIconsComponent from "../components/MenuIcon"
+import Card from "../components/Card";
 
 function Home() {
     const [allMusiciens, setAllMusiciens] = useState([]);
@@ -76,6 +74,18 @@ function Home() {
         const jwtToken = Cookies.get("jwt");
         console.log("invite " + userUidToSend)
         try {
+            const userDocRefGroup = await doc(db, 'users', userUid);
+            const userDocSnapshotGroup = await getDoc(userDocRefGroup);
+            if (userDocSnapshotGroup.data().group === null) {
+                const docRef = await addDoc(collection(db, 'groups'), {
+                    users: [userUid] // Ajouter l'utilisateur initial au tableau "users"
+                });
+                const userDocRefUser = await doc(db, 'users', userUid);
+                await updateDoc(userDocRefUser, {
+                    group: docRef.id
+                });
+            }
+                
             const userDocRef = await doc(db, 'users', userUidToSend);
             const userDocSnapshot = await getDoc(userDocRef);
             const subscritpion = userDocSnapshot.data().notification;
@@ -86,21 +96,6 @@ function Home() {
         }
         setLoading(null);
     }
-
-    const instruments = {
-        1: drums,
-        2: guitar,
-        3: bass,
-        4: piano,
-        5: singer,
-    };
-
-
-    const niveaux = {
-        1: "expert",
-        2: "intermediaire",
-        3: "débutant"
-    };
 
     const updateNotificationField = async (uid, notificationData) => {
         try {
@@ -146,6 +141,9 @@ function Home() {
         async function fetchData() {
             setShowLoadingMusicians(true);
             const jwtToken = Cookies.get("jwt");
+            if (!jwtToken)
+                history('/');
+
             setUserUid(jwtDecode(jwtToken).uid);
 
             try {
@@ -170,14 +168,9 @@ function Home() {
         fetchData();
     }, []);
 
-    const styleArray = [
-        { backgroundColor: '#a1a1a1' },
-        { backgroundColor: '#d0d0d0' },
-        { backgroundColor: '#e8e8e8' },
-    ]
-
     return (
         <div>
+            <MenuIconsComponent myGroup={true} home={false} invitations={true} myAccount={true} />
             {
                 writingText &&
                 <WrittingTextModalComponent text={writingText} invite={invite} />
@@ -192,11 +185,8 @@ function Home() {
             }
             {
                 errorMessage &&
-                <ErrorModalComponent Error={errorMessage} />
+                <ErrorModalComponent Error={errorMessage} onClose={handleClose} />
             }
-            <div className="absolute m-4 top-0 right-0">
-                <button onClick={() => history('/invitations')} className="p-3 bg-black rounded-lg text-white w-full font-semibold">Mes invitations</button>
-            </div>
             <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-4 py-12">
                 <div className="text-center pb-12">
                     <h2 className="text-base font-bold text-indigo-600">
@@ -228,24 +218,12 @@ function Home() {
                     {
                         Array.isArray(allMusiciens) ?
                             allMusiciens.map((data, index) => (
-                                console.log(data.username),
+                                console.log(data),
+                                console.log(index),
                                 data.id === userUid ?
                                     null
                                     :
-                                    <div key={index} className="w-full bg-white rounded-lg p-10 flex flex-col justify-center items-center" style={styleArray[data.niveau - 1]}>
-                                        <div className="mb-6">
-                                            <img className="object-center object-cover rounded-full h-48 w-48" src={instruments[data.instrument]} alt="photo" />
-                                        </div>
-                                        <div className="text-center">
-                                            <p className="text-2xl text-gray-700 font-bold mb-2">{data.username}</p>
-                                            <p className="text-xl text-gray-500 mb-6">{niveaux[data.niveau]}</p>
-                                        </div>
-                                        <div className="flex items-center justify-center">
-                                            <button onClick={(e) => callInviteMessage(data.id, data.username, e)} className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-16 rounded ease-in-out duration-300">
-                                                Inviter
-                                            </button>
-                                        </div>
-                                    </div>
+                                    <Card index={index} data={data} callInviteMessage = { callInviteMessage }/>
                             ))
                             : null
                     }

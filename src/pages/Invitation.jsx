@@ -1,18 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { app } from "../registration/FirebaseConfig";
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
+import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom'
 import { groupRequestsFunctionRequest, joinGroupRequest } from "../controlers/request";
 import Cookies from 'js-cookie';
 import ErrorModalComponent from "../components/ErrorModal"
 import OfflineComponent from "../components/OfflineModul";
+import MenuIconsComponent from "../components/MenuIcon"
+import { jwtDecode } from "jwt-decode";
+import LoadingModalComponent from "../components/LoadingModal"
 
 function Invitation() {
+    const [myGroup, setMyGroup] = useState(null);
     const [groupRequests, setGroupRequests] = useState(null);
     const [showLoadingGroupRequests, setShowLoadingGroupRequests] = useState(true);
     const [errorMessage, setErrorMessage] = useState(null);
+    const [loading, setLoading] = useState(null);
     const database = getAuth(app);
     const history = useNavigate()
+    const db = getFirestore();
 
     async function deconnection() {
         await database.signOut();
@@ -25,10 +32,17 @@ function Invitation() {
         const jwtToken = Cookies.get("jwt");
         try {
             joinGroupRequest(jwtToken, userUid)
+            const data1 = await groupRequestsFunctionRequest(jwtToken);
+            setGroupRequests(data1)
         } catch (e) {
             setErrorMessage("Erreur lors de l'acceptation de l'invitation")
         }
     }
+
+    const handleClose = () => {
+        setErrorMessage(null);
+        setShowLoadingGroupRequests(null);
+    };
 
     useEffect(() => {
         onAuthStateChanged(database, async (user) => {
@@ -44,10 +58,17 @@ function Invitation() {
         async function fetchData() {
             setShowLoadingGroupRequests(true);
             const jwtToken = Cookies.get("jwt");
+            const decodedToken = jwtDecode(jwtToken);
 
             try {
                 const data1 = await groupRequestsFunctionRequest(jwtToken);
                 setGroupRequests(data1)
+
+                const userDocRef = doc(db, 'users', decodedToken.uid);
+                const userDoc = await getDoc(userDocRef);
+                const userData = userDoc.data();
+                setMyGroup(userData.group)
+
                 setShowLoadingGroupRequests(false);
             } catch (e) {
                 console.log(e)
@@ -60,13 +81,15 @@ function Invitation() {
 
     return (
         <div>
+            <MenuIconsComponent myGroup={true} home={true} invitations={false} myAccount={true} />
+            {
+                loading &&
+                <LoadingModalComponent Text={loading} />
+            }
             {
                 errorMessage &&
-                <ErrorModalComponent Error={errorMessage} />
+                <ErrorModalComponent Error={errorMessage} onClose={handleClose} />
             }
-            <div className="absolute m-4 top-0 right-0">
-                <button onClick={() => history('/home')} className="p-3 bg-black rounded-lg text-white w-full font-semibold">Home</button>
-            </div>
             <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-4 py-12">
                 <div className="text-center pb-12">
                     <h1 className="font-bold text-3xl md:text-4xl lg:text-5xl font-heading text-gray-900">
@@ -74,6 +97,14 @@ function Invitation() {
                     </h1>
                 </div>
                 <OfflineComponent />
+                {
+                    myGroup &&
+                    <div className="font-regular flex w-full rounded-lg bg-red-700 mb-4 p-4 text-base text-white opacity-100" data- dismissible="alert" >
+                        <div className="mr-12">
+                            Attention vous avez déjà un groupe
+                        </div>
+                    </div >
+                }
                 {showLoadingGroupRequests && (
                     <div className="flex items-center justify-center">
                         <svg fill='none' className="w-16 h-16 animate-spin" viewBox="0 0 32 32" xmlns='http://www.w3.org/2000/svg'>
@@ -106,11 +137,6 @@ function Invitation() {
                                     <p className="text-2xl text-gray-700 font-bold mb-2">Pas d'invitations :(</p>
                                 </div>
                     }
-                    <div className="flex items-center justify-center">
-                        <button onClick={(e) => joinGroup("jTrezOWTL7XkJlvPOUGLbeZS3hk1", e)} className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-16 rounded ease-in-out duration-300">
-                            Rejoindre
-                        </button>
-                    </div>
                 </div>
             </section>
             <div className="flex items-center justify-center">

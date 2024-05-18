@@ -28,7 +28,6 @@ function Page404() {
                 className="block w-full select-none mr-1 rounded-lg bg-black hover:bg-black hover:text-white py-3 px-7 text-center align-middle font-sans text-lg font-bold uppercase duration-300 text-gray-300 shadow-md transition-all focus:opacity-[0.85]  active:opacity-[0.85]"
                 type="button"
                 data-ripple-light="true"
-                style={{ fontFamily: "Oswald" }}
                 onClick={(e) => { e.preventDefault(); history("/home"); }}
               >
                 Rentrer à la maison

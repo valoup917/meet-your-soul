@@ -40,6 +40,7 @@ self.addEventListener('install', (event) => {
           });
       })
   );
+  self.skipWaiting();
 });
 
 
@@ -95,13 +96,7 @@ self.addEventListener("activate", (event) => {
             })
         ))
     )
-});
-
-self.addEventListener('update', (event) => {
-  console.log("update -------------------------------------")
-  if (event.data.action === 'skipWaiting') {
-    self.skipWaiting();
-  }
+  self.clients.claim();
 });
 
 self.addEventListener("push", function(e) {
@@ -156,4 +151,10 @@ self.addEventListener('notificationclick', function(event) {
   event.waitUntil(
     clients.openWindow('http://localhost:3000/invitations')
   );
+});
+
+self.addEventListener('message', function (event) {
+  if (event.data.action === 'skipWaiting') {
+    self.skipWaiting();
+  }
 });

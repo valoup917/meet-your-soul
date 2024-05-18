@@ -3,8 +3,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import RegisterAndLogin from "./RegisterAndLogin"
 import HomeScreen from "../pages/Home"
 import InvitationScreen from "../pages/Invitation"
+import MyGroup from "../pages/MyGroup"
 import Alert from "../components/alert";
 import Page404 from "../pages/Page404";
+import MyAccount from "../pages/MyAccount";
 import notifSound from '../assets/sound/notificationSound.mp3';
 
 function PageHandler() {
@@ -77,6 +79,8 @@ function PageHandler() {
                     <Route path="/" element={<RegisterAndLogin />} />
                     <Route path="/home" element={<HomeScreen />} />
                     <Route path="/invitations" element={<InvitationScreen />} />
+                    <Route path="/myGroup" element={<MyGroup />} />
+                    <Route path="/myAccount" element={<MyAccount />} />
                     <Route path="*" element={<Page404 />} />
                 </Routes>
             </div>

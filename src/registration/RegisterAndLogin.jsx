@@ -73,6 +73,11 @@ function RegisterAndLogin() {
     }
   };
 
+  const handleClose = () => {
+    setErrorMessage(null);
+    setLoading(null);
+  };
+
 
   const SignIn = async (e, type) => {
     e.preventDefault()
@@ -95,7 +100,14 @@ function RegisterAndLogin() {
           username: username,
           email: email,
           notification: null,
-          group_request: []
+          group: null,
+          group_request: [],
+          favoriteBands: null,
+          age: null,
+          hobbies: null,
+          job: null,
+          yearsPlaying: null,
+          location: null
         });
 
         const jwt = await userLoginReqest(email, user.uid, password);
@@ -158,7 +170,7 @@ function RegisterAndLogin() {
     <div className='overflow-hidden'>
       {
         errorMessage &&
-        <ErrorModalComponent Error={errorMessage} />
+        <ErrorModalComponent Error={errorMessage} onClose={handleClose} />
       }
       {
         loading &&

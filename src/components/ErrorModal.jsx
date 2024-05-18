@@ -3,7 +3,7 @@ import errorIcon1 from "../assets/icon/errorIcon1.png"
 import errorIcon2 from "../assets/icon/errorIcon2.png"
 import errorIcon3 from "../assets/icon/errorIcon3.png"
 
-function ErrorModalComponent({ Error }) {
+function ErrorModalComponent({ Error, onClose }) {
     const [errorImage, setErrorImage] = useState('');
 
     useEffect(() => {
@@ -32,10 +32,7 @@ function ErrorModalComponent({ Error }) {
                                 className="block w-full select-none mr-1 rounded-lg bg-black hover:bg-black hover:text-white py-3 px-7 text-center align-middle font-sans text-lg font-bold uppercase duration-300 text-gray-300 shadow-md transition-all focus:opacity-[0.85]  active:opacity-[0.85]"
                                 type="button"
                                 data-ripple-light="true"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    window.location.reload();
-                                }}
+                                onClick={onClose}
                             >
                                 Fermer
                             </button>

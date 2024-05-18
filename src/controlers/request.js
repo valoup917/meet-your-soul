@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const URL = `https://pwa-epitech.onrender.com/`
+const URL = `http://localhost:3005/`
 
 export const userLoginReqest = async (email, uid, password) => {
     try {
@@ -95,6 +95,28 @@ export const sendNotificationRequest = async (jwt, subscritpion, messageToSend, 
                 subscritpion: subscritpion,
                 message: messageToSend,
                 targetUid: targetUid
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${jwt}`
+                }
+            }
+        );
+        console.log(response.status)
+        return response.data;
+    } catch (error) {
+        throw error.response;
+    }
+}
+
+export const sendGroupNotificationRequest = async (jwt, messageToSend, subscritpion) => {
+
+    try {
+        const response = await axios.post(
+            URL + "sendGroupNotif",
+            {
+                message: messageToSend,
+                subscritpion: subscritpion,
             },
             {
                 headers: {
