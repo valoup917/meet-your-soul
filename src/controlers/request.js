@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const URL = `http://localhost:3005/`
+const URL = `https://pwa-epitech.onrender.com/`
 
 export const userLoginReqest = async (email, uid, password) => {
     try {

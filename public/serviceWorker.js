@@ -144,12 +144,10 @@ self.addEventListener("push", function(e) {
 });
 
 self.addEventListener('notificationclick', function(event) {
-  console.log('Notification cliquée');
-
   event.notification.close();
 
   event.waitUntil(
-    clients.openWindow('http://localhost:3000/invitations')
+    clients.openWindow('https://main--meet-your-soul.netlify.app/invitations')
   );
 });
 
