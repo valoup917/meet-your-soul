@@ -1,4 +1,4 @@
-<h1 align="center"> 🔔 Progressive web app 🎶 </h1> <br>
+<h1 align="center"> 🔔 Meet your soul PWA 🎶 </h1> <br>
 <p align="center">
     <img alt="mockup" title="mockup" src="./src/assets/readme/mockups-presentation.png" width="1000">
 </p>
@@ -23,7 +23,7 @@ permettant ainsi une interaction plus naturelle et intégrée sur l'appareil de 
 </p>
 
 #### 🔧 Comment ça fonctionne ?
-Notre PWA utilise React JS pour créer une interface utilisateur interactive et dynamique 🖥️. Grâce à React, nous pouvons mettre à jour le contenu de 
+Ma PWA utilise React JS pour créer une interface utilisateur interactive et dynamique 🖥️. Grâce à React, je peux mettre à jour le contenu de 
 manière efficace et rendre l'expérience utilisateur plus agréable et réactive 🌟. Le backend est géré par Node JS, offrant une plateforme robuste pour 
 les opérations côté serveur, y compris la gestion des requêtes API, la manipulation des données, et la logique métier ⚙️.
 
@@ -37,10 +37,10 @@ la performance et l'expérience utilisateur en conditions de réseau limité �
 
 
 #### 🎶 Présentation
-Bienvenue sur notre application Progressive Web App (PWA) 🌐, une plateforme spécialement conçue pour les musiciens désireux de former des groupes et de collaborer avec d'autres artistes 🎸🥁. Cette application facilite la rencontre et la collaboration entre musiciens de différents niveaux et spécialisations instrumentales, rendant la création de synergies musicales à la fois simple et enrichissante.
+Bienvenue sur l'application Meet your soul 🌐, une plateforme spécialement conçue pour les musiciens désireux de former des groupes et de collaborer avec d'autres artistes 🎸🥁. Cette application facilite la rencontre et la collaboration entre musiciens de différents niveaux et spécialisations instrumentales, rendant la création de synergies musicales à la fois simple et enrichissante.
 
 #### 🔗 Fonctionnalités
-Au cœur de notre application, chaque fonctionnalité est pensée pour faciliter chaque étape de votre parcours musical 🎼. Dès l'inscription, chaque utilisateur peut créer un profil, y indiquant son instrument de prédilection et son niveau de compétence 🎷. Les utilisateurs ont ensuite accès à une liste complète d'autres musiciens, favorisant des connexions précises et pertinentes. La fonctionnalité d'invitations personnalisées permet d'envoyer des invitations pour rejoindre ou former un groupe, avec des notifications en temps réel propulsées par les capacités de la PWA, même si l'autre utilisateur n'est pas en ligne 💌. La gestion des invitations, acceptées ou refusées, est également intuitive, permettant une interaction fluide et simple entre les utilisateur
+Au cœur de l'application, chaque fonctionnalité est pensée pour faciliter chaque étape de votre parcours musical 🎼. Dès l'inscription, chaque utilisateur peut créer un profil, y indiquant son instrument de prédilection et son niveau de compétence 🎷. Les utilisateurs ont ensuite accès à une liste complète d'autres musiciens, favorisant des connexions précises et pertinentes. La fonctionnalité d'invitations personnalisées permet d'envoyer des invitations pour rejoindre ou former un groupe, avec des notifications en temps réel propulsées par les capacités de la PWA, même si l'autre utilisateur n'est pas en ligne 💌. La gestion des invitations, acceptées ou refusées, est également intuitive, permettant une interaction fluide et simple entre les utilisateur
 
 ---
 
